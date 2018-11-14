@@ -42,12 +42,18 @@ func loginHandler(formatter *render.Render) http.HandlerFunc{
 		fmt.Println("method:", r.Method) //获取请求的方法
 		fmt.Println("username:", r.Form["username"])
 		fmt.Println("password:", r.Form["password"])
-		if len(r.Form["username"])>0{
-			formatter.HTML(w, http.StatusOK, "index", struct {
-				ID      string `json:"id"`
-				Content string `json:"content"`
-			}{ID: r.Form["username"][0], Content: r.Form["password"][0]})
+		if(r.Method == "GET"){
+			fmt.Fprintf(w,"Can't directly get the page, you should go to index.html first")
+		}else{
+			if len(r.Form["username"][0])!=0{
+				formatter.HTML(w, http.StatusOK, "form", struct {
+					USER	string `json:"user"`
+					PASS	string `json:"password"`
+				}{USER: r.Form["username"][0], PASS: r.Form["password"][0]})
+			}
 		}
+
+
 	}
 }
 
